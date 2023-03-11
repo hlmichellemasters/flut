@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,7 +22,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = ['How', 'Why'];
+    final questions = [
+      {
+        'questionText': 'How?',
+        'answers': ['Mushies', 'Aya', 'D']
+      },
+      {
+        'questionText': 'Why?',
+        'answers': ['Sad', 'Mad', 'Glad']
+      },
+      {
+        'questionText': 'When',
+        'answers': ['Now', '2 Weeks', '2 Months']
+      },
+    ];
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
@@ -29,18 +43,11 @@ class _MyAppState extends State<MyApp> {
           ),
           body: Column(
             children: [
-              Question(questions[_questionIndex]),
-              ElevatedButton(child: Text('Answer 1'), onPressed: _answerQuestion
-                  // print('Answer 1 chosen')
-                  ),
-              ElevatedButton(
-                  child: Text('Answer 2'),
-                  onPressed: () => print('Answer 2 chosen')),
-              ElevatedButton(
-                  child: Text('Answer 3'),
-                  onPressed: () => print('Answer 3 chosen')),
-              // pass function (answerQuestion) without parentheses after
-              // to not call right away and instead pass the function (pointer)
+              Question(questions[_questionIndex]['questionText']),
+              ...(questions[_questionIndex]['answers'] as List<String>)
+                  .map((answer) {
+                return Answer(_answerQuestion, answer);
+              }).toList()
             ],
           )
           // control + space_bar to cycle through suggested arguments
