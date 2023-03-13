@@ -11,6 +11,20 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final questions = const [
+    {
+      'questionText': 'How?',
+      'answers': ['Mushies', 'Aya', 'D']
+    },
+    {
+      'questionText': 'Why?',
+      'answers': ['Sad', 'Mad', 'Glad']
+    },
+    {
+      'questionText': 'When',
+      'answers': ['Now', '2 Weeks', '2 Months']
+    },
+  ];
   var _questionIndex = 0;
 
   void _answerQuestion() {
@@ -18,38 +32,29 @@ class _MyAppState extends State<MyApp> {
       _questionIndex = _questionIndex + 1;
     });
     print(_questionIndex);
+    if (_questionIndex < questions.length) {
+      print('We have more questions!');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final questions = [
-      {
-        'questionText': 'How?',
-        'answers': ['Mushies', 'Aya', 'D']
-      },
-      {
-        'questionText': 'Why?',
-        'answers': ['Sad', 'Mad', 'Glad']
-      },
-      {
-        'questionText': 'When',
-        'answers': ['Now', '2 Weeks', '2 Months']
-      },
-    ];
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
             title: Text('My First App'),
           ),
-          body: Column(
-            children: [
-              Question(questions[_questionIndex]['questionText']),
-              ...(questions[_questionIndex]['answers'] as List<String>)
-                  .map((answer) {
-                return Answer(_answerQuestion, answer);
-              }).toList()
-            ],
-          )
+          body: _questionIndex < questions.length
+              ? Column(
+                  children: [
+                    Question(questions[_questionIndex]['questionText']),
+                    ...(questions[_questionIndex]['answers'] as List<String>)
+                        .map((answer) {
+                      return Answer(_answerQuestion, answer);
+                    }).toList()
+                  ],
+                )
+              : Center(child: Text('You did it!'))
           // control + space_bar to cycle through suggested arguments
           ),
     );
